@@ -1,0 +1,9 @@
+// Prisma 7: the connection URL lives in prisma.config.ts and the client uses a driver adapter.
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
