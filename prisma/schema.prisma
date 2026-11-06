@@ -1,4 +1,5 @@
 // Prisma 7: the connection URL lives in prisma.config.ts and the client uses a driver adapter.
+// CHECK constraints are not expressible here; they live in the init_schema migration SQL.
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -6,4 +7,113 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+enum Provider {
+  google
+  microsoft
+}
+
+enum OrderStatus {
+  PENDING
+  PROVISIONING
+  ACTIVE
+  FAILED
+}
+
+enum MailboxStatus {
+  PENDING
+  ACTIVE
+  FAILED
+}
+
+enum ActorType {
+  CUSTOMER
+  ADMIN
+  WORKER
+  SYSTEM
+}
+
+model User {
+  id           String   @id @default(uuid()) @db.Uuid
+  email        String   @unique
+  name         String
+  passwordHash String   @map("password_hash")
+  role         Role
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  orders Order[]
+
+  @@map("users")
+}
+
+model Order {
+  id             String      @id @default(uuid()) @db.Uuid
+  userId         String      @map("user_id") @db.Uuid
+  domain         String
+  provider       Provider
+  mailboxCount   Int         @map("mailbox_count")
+  status         OrderStatus @default(PENDING)
+  idempotencyKey String      @map("idempotency_key")
+  requestHash    String      @map("request_hash")
+  attempts       Int         @default(0)
+  lockedBy       String?     @map("locked_by")
+  lockedAt       DateTime?   @map("locked_at") @db.Timestamptz(3)
+  lastError      String?     @map("last_error")
+  createdAt      DateTime    @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt      DateTime    @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  user      User         @relation(fields: [userId], references: [id], onDelete: Restrict)
+  mailboxes Mailbox[]
+  events    OrderEvent[]
+
+  @@unique([userId, idempotencyKey], map: "orders_user_id_idempotency_key_key")
+  @@index([status, createdAt], map: "orders_status_created_at_idx")
+  @@index([userId, createdAt], map: "orders_user_id_created_at_idx")
+  @@index([status, provider, createdAt], map: "orders_status_provider_created_at_idx")
+  @@index([createdAt], map: "orders_created_at_idx")
+  @@map("orders")
+}
+
+model Mailbox {
+  id            String        @id @default(uuid()) @db.Uuid
+  orderId       String        @map("order_id") @db.Uuid
+  position      Int
+  address       String        @unique
+  status        MailboxStatus @default(PENDING)
+  externalId    String?       @map("external_id")
+  lastError     String?       @map("last_error")
+  attempts      Int           @default(0)
+  provisionedAt DateTime?     @map("provisioned_at") @db.Timestamptz(3)
+  createdAt     DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt     DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@unique([orderId, position], map: "mailboxes_order_id_position_key")
+  @@map("mailboxes")
+}
+
+model OrderEvent {
+  id         String       @id @default(uuid()) @db.Uuid
+  orderId    String       @map("order_id") @db.Uuid
+  fromStatus OrderStatus? @map("from_status")
+  toStatus   OrderStatus  @map("to_status")
+  actorType  ActorType    @map("actor_type")
+  actorId    String?      @map("actor_id")
+  actorLabel String?      @map("actor_label")
+  reason     String?
+  metadata   Json?
+  createdAt  DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Restrict)
+
+  @@index([orderId, createdAt], map: "order_events_order_id_created_at_idx")
+  @@map("order_events")
 }
