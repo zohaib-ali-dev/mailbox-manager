@@ -21,6 +21,8 @@ export default defineConfig({
           environment: 'node',
           // Files share one real database: run them one at a time.
           fileParallelism: false,
+          globalSetup: ['tests/integration/global-setup.ts'],
+          setupFiles: ['tests/integration/setup.ts'],
           testTimeout: 30_000,
           hookTimeout: 120_000,
         },
