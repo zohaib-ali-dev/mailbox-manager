@@ -10,6 +10,11 @@ export const MAX_PAGE_SIZE = 50;
 export const PAGE_SIZE_OPTIONS = [10, 20, 50] as const;
 
 export const ORDER_POLL_INTERVAL_MS = 2000;
+/** Lists refresh on their own while a visible row is still in progress. */
+export const ADMIN_LIST_REFRESH_MS = 5000;
+export const CUSTOMER_LIST_REFRESH_MS = 3000;
+/** The detail page shows a warning after this many failed polls in a row. */
+export const POLL_FAILURE_WARNING_THRESHOLD = 3;
 
 export const IDEMPOTENCY_KEY_HEADER = 'Idempotency-Key';
 export const IDEMPOTENT_REPLAYED_HEADER = 'Idempotent-Replayed';
@@ -19,6 +24,8 @@ export const IDEMPOTENCY_KEY_MAX_LENGTH = 128;
 /** Value sets mirrored by the Prisma enums (a compile-time check in src/server/domain ties them). */
 export const ORDER_STATUSES = ['PENDING', 'PROVISIONING', 'ACTIVE', 'FAILED'] as const;
 export type OrderStatus = (typeof ORDER_STATUSES)[number];
+/** Statuses the UI keeps refreshing for (the worker has not decided yet). */
+export const IN_PROGRESS_STATUSES: readonly OrderStatus[] = ['PENDING', 'PROVISIONING'];
 
 export const MAILBOX_STATUSES = ['PENDING', 'ACTIVE', 'FAILED'] as const;
 export type MailboxStatus = (typeof MAILBOX_STATUSES)[number];
