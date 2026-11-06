@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { useNotify } from '@/components/feedback/SnackbarProvider';
 import { ApiError, apiRequest, isAbortError } from '@/lib/api-client';
 import { usePageVisible } from '@/lib/use-page-visible';
 import {
@@ -19,6 +20,7 @@ import type { OrderDetail } from '@/shared/types/order.dto';
  */
 export function useOrderPolling(initial: OrderDetail) {
   const router = useRouter();
+  const notify = useNotify();
   const visible = usePageVisible();
   const [order, setOrder] = useState(initial);
   const [failures, setFailures] = useState(0);
@@ -41,7 +43,8 @@ export function useOrderPolling(initial: OrderDetail) {
       } catch (error) {
         if (isAbortError(error) || controller.signal.aborted) return;
         if (error instanceof ApiError && error.status === 401) {
-          router.refresh(); // Session expired: the layout redirects to /login.
+          notify('Your session has expired. Please sign in again.', 'warning');
+          router.refresh(); // The layout redirects to /login.
           return;
         }
         setFailures((count) => count + 1);
@@ -54,7 +57,7 @@ export function useOrderPolling(initial: OrderDetail) {
       controller.abort();
       clearTimeout(timer);
     };
-  }, [orderId, inProgress, visible, router]);
+  }, [orderId, inProgress, visible, router, notify]);
 
   return {
     order,

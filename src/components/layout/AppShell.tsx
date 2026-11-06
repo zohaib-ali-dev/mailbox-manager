@@ -19,7 +19,6 @@ import Typography from '@mui/material/Typography';
 import NextLink from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, type ReactNode } from 'react';
-import { SnackbarProvider } from '@/components/feedback/SnackbarProvider';
 import type { UserDto } from '@/shared/types/auth.dto';
 import { tokens } from '@/styles/theme';
 import { BrandMark } from './BrandMark';
@@ -42,7 +41,7 @@ export function AppShell({ user, children }: { user: UserDto; children: ReactNod
   const home = user.role === 'ADMIN' ? '/admin/orders' : '/orders';
 
   return (
-    <SnackbarProvider>
+    <>
       <Box
         component="a"
         href="#main"
@@ -196,6 +195,6 @@ export function AppShell({ user, children }: { user: UserDto; children: ReactNod
       >
         {children}
       </Container>
-    </SnackbarProvider>
+    </>
   );
 }

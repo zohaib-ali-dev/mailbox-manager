@@ -12,7 +12,9 @@ import { PageHeader } from '@/components/feedback/PageHeader';
 import { RetryOrderButton } from '@/features/admin/components/RetryOrderButton';
 import { pluralize } from '@/lib/format';
 import type { OrderDetail } from '@/shared/types/order.dto';
+import { useMemo } from 'react';
 import { useOrderPolling } from '../hooks/useOrderPolling';
+import { useStatusChangeNotifier } from '../hooks/useStatusChangeNotifier';
 import { codeStyles, mutedTextStyles } from '../styles/ordersStyles';
 import { AuditLogTimeline } from './AuditLogTimeline';
 import { MailboxTable } from './MailboxTable';
@@ -32,6 +34,8 @@ export function OrderDetailView({
   back: { href: string; label: string };
 }) {
   const { order, replace, isLive, connectionProblem } = useOrderPolling(initial);
+  const watched = useMemo(() => [order], [order]);
+  useStatusChangeNotifier(watched);
 
   return (
     <>
@@ -47,7 +51,12 @@ export function OrderDetailView({
               <LocalTime iso={order.createdAt} />
               {order.attempts > 1 ? ` · ${order.attempts} attempts` : ''}
             </Typography>
-            {isLive ? <LiveIndicator label="Updating live" /> : null}
+            {isLive ? (
+              <LiveIndicator
+                label="Updating live"
+                hint="This page checks for changes every 2 seconds until the order is Active or Failed."
+              />
+            ) : null}
           </>
         }
         actions={

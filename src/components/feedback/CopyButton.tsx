@@ -5,10 +5,12 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { useEffect, useState } from 'react';
+import { useNotify } from './SnackbarProvider';
 
-/** Copies `value` to the clipboard and confirms with a check mark for two seconds. */
+/** Copies `value` to the clipboard, confirms with a check mark and a snackbar. */
 export function CopyButton({ value, label }: { value: string; label: string }) {
   const [copied, setCopied] = useState(false);
+  const notify = useNotify();
 
   useEffect(() => {
     if (!copied) return;
@@ -21,8 +23,11 @@ export function CopyButton({ value, label }: { value: string; label: string }) {
     try {
       await navigator.clipboard.writeText(value);
       setCopied(true);
+      const what = label.replace(/^Copy /, '');
+      notify(`${what.charAt(0).toUpperCase()}${what.slice(1)} copied to the clipboard.`, 'info');
     } catch {
       setCopied(false);
+      notify('Could not copy. Select the text and copy it manually.', 'warning');
     }
   }
 

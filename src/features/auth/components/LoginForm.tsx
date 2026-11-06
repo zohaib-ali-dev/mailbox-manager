@@ -12,7 +12,9 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { useRouter } from 'next/navigation';
 import { useRef, useState, type FormEvent } from 'react';
+import { useNotify } from '@/components/feedback/SnackbarProvider';
 import { ApiError, apiRequest } from '@/lib/api-client';
+import type { UserDto } from '@/shared/types/auth.dto';
 import { loginSchema } from '@/shared/schemas/auth.schema';
 import { DemoCredentials } from './DemoCredentials';
 
@@ -24,6 +26,7 @@ type FieldErrors = Partial<Record<'email' | 'password', string>>;
  */
 export function LoginForm({ next, showDemo }: { next: string; showDemo: boolean }) {
   const router = useRouter();
+  const notify = useNotify();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -51,7 +54,13 @@ export function LoginForm({ next, showDemo }: { next: string; showDemo: boolean 
     setFieldErrors({});
     setPending(true);
     try {
-      await apiRequest('/api/auth/login', { method: 'POST', body: parsed.data });
+      const { data } = await apiRequest<{ user: UserDto }>('/api/auth/login', {
+        method: 'POST',
+        body: parsed.data,
+      });
+      notify(
+        `Welcome back, ${data.user.name.split(' ')[0] || data.user.name}. You are signed in as ${data.user.role === 'ADMIN' ? 'an admin' : 'a customer'}.`,
+      );
       router.replace(next);
       router.refresh();
     } catch (error) {

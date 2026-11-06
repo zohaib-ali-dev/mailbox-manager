@@ -40,6 +40,7 @@ export function SnackbarProvider({ children }: { children: ReactNode }) {
           if (reason !== 'clickaway') setOpen(false);
         }}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        sx={{ bottom: { xs: 'calc(16px + env(safe-area-inset-bottom))', sm: 24 } }}
       >
         {toast ? (
           <Alert

@@ -121,8 +121,8 @@ export function CreateOrderForm() {
       renew();
       notify(
         response.status === 201
-          ? 'Order created'
-          : 'This order was already created. Showing it now.',
+          ? `Order placed: ${pluralize(data.mailboxCount, `${PROVIDER_LABELS[data.provider]} mailbox`, `${PROVIDER_LABELS[data.provider]} mailboxes`)} for ${data.domain}. Provisioning starts now.`
+          : 'This order was already placed. Showing it now.',
       );
       router.push(`/orders/${data.id}`);
     } catch (error) {

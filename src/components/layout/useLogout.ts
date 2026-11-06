@@ -16,6 +16,7 @@ export function useLogout() {
     setPending(true);
     try {
       await apiRequest('/api/auth/logout', { method: 'POST' });
+      notify('You are signed out.', 'info');
       router.replace('/login');
       router.refresh();
     } catch (error) {
