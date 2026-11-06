@@ -23,7 +23,9 @@
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "vitest run --project unit",
     "test:integration": "vitest run --project integration --no-file-parallelism",
-    "test:watch": "vitest --project unit"
+    "test:watch": "vitest --project unit",
+    "worker": "tsx src/server/worker/main.ts",
+    "order:create": "tsx scripts/create-order.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.10.1",

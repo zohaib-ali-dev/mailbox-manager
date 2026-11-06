@@ -174,7 +174,7 @@ async function seedUsers(container: Container): Promise<Map<string, Viewer>> {
       create: { email, name: user.name, role: user.role, passwordHash },
       update: { name: user.name, role: user.role, passwordHash },
     });
-    viewers.set(email, { id: saved.id, email: saved.email, role: saved.role });
+    viewers.set(email, { id: saved.id, email: saved.email, name: saved.name, role: saved.role });
   }
   return viewers;
 }
