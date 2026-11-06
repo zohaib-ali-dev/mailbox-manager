@@ -79,7 +79,8 @@ export function OrderDetailView({
           sx={{
             display: 'grid',
             gap: 2.5,
-            gridTemplateColumns: { xs: 'minmax(0, 1fr)', lg: 'minmax(0, 1fr) 380px' },
+            // Stacked: the mailbox table needs the full content width so every column fits.
+            gridTemplateColumns: 'minmax(0, 1fr)',
             alignItems: 'start',
           }}
         >

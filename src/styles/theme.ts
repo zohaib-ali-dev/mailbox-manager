@@ -99,7 +99,12 @@ export const theme = createTheme({
       },
     },
     MuiPaper: {
-      styleOverrides: { rounded: { borderRadius: 12 } },
+      styleOverrides: {
+        // Dark mode would otherwise lighten raised surfaces (menus, drawer) with a white overlay
+        // that is not in the palette; every surface uses its token colour instead.
+        root: { backgroundImage: 'none' },
+        rounded: { borderRadius: 12 },
+      },
     },
     MuiTableHead: {
       styleOverrides: {

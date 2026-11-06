@@ -66,7 +66,7 @@ export function MailboxTable({ mailboxes }: { mailboxes: MailboxDto[] }) {
                 <TableCell sx={mutedTextStyles}>
                   {mailbox.provisionedAt ? <LocalTime iso={mailbox.provisionedAt} /> : 'Not yet'}
                 </TableCell>
-                <TableCell sx={{ maxWidth: 260 }}>
+                <TableCell sx={{ width: 200 }}>
                   {mailbox.lastError ? (
                     <Tooltip title={mailbox.lastError}>
                       <Typography
@@ -74,6 +74,9 @@ export function MailboxTable({ mailboxes }: { mailboxes: MailboxDto[] }) {
                         tabIndex={0}
                         sx={(theme) => ({
                           color: tokens(theme).status.failedText,
+                          // A fixed width makes long provider errors end in an ellipsis (full
+                          // text in the tooltip) instead of being cut off by the card edge.
+                          maxWidth: 180,
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
                           whiteSpace: 'nowrap',
