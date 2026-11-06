@@ -1,0 +1,262 @@
+{
+  "light": {
+    "base": {
+      "primary": {
+        "main": "#2563EB",
+        "light": "#3B82F6",
+        "dark": "#1D4ED8",
+        "contrastText": "#FFFFFF"
+      },
+      "secondary": {
+        "main": "#0F766E",
+        "light": "#14B8A6",
+        "dark": "#115E59",
+        "contrastText": "#FFFFFF"
+      },
+      "error": {
+        "main": "#DC2626",
+        "light": "#EF4444",
+        "dark": "#B91C1C",
+        "contrastText": "#FFFFFF"
+      },
+      "warning": {
+        "main": "#B45309",
+        "light": "#D97706",
+        "dark": "#92400E",
+        "contrastText": "#FFFFFF"
+      },
+      "info": {
+        "main": "#0284C7",
+        "light": "#0EA5E9",
+        "dark": "#0369A1",
+        "contrastText": "#FFFFFF"
+      },
+      "success": {
+        "main": "#16A34A",
+        "light": "#22C55E",
+        "dark": "#15803D",
+        "contrastText": "#FFFFFF"
+      },
+      "background": { "default": "#F8FAFC", "paper": "#FFFFFF" },
+      "text": { "primary": "#0F172A", "secondary": "#475569", "disabled": "#94A3B8" },
+      "divider": "#E2E8F0"
+    },
+    "shell": {
+      "appBarBg": "#FFFFFF",
+      "appBarText": "#0F172A",
+      "appBarBorder": "#E2E8F0",
+      "brandColor": "#2563EB",
+      "navText": "#475569",
+      "navActiveText": "#1D4ED8",
+      "navActiveBg": "#EFF6FF",
+      "roleChipBg": "#F1F5F9",
+      "roleChipText": "#334155",
+      "appBarGlassBg": "rgba(255, 255, 255, 0.72)",
+      "pageGlowPrimary": "rgba(37, 99, 235, 0.10)",
+      "pageGlowSecondary": "rgba(15, 118, 110, 0.08)",
+      "focusRing": "rgba(37, 99, 235, 0.45)",
+      "selectionBg": "#BFDBFE",
+      "scrollbarThumb": "#CBD5E1"
+    },
+    "auth": {
+      "pageBg": "#F1F5F9",
+      "cardBg": "#FFFFFF",
+      "cardBorder": "#E2E8F0",
+      "cardShadow": "0 10px 30px rgba(15, 23, 42, 0.08)",
+      "titleColor": "#0F172A",
+      "subtitleColor": "#64748B",
+      "demoBoxBg": "#F8FAFC",
+      "demoBoxBorder": "#CBD5E1",
+      "demoBoxText": "#334155",
+      "cardGlassBg": "rgba(255, 255, 255, 0.78)",
+      "cardGlassBorder": "rgba(148, 163, 184, 0.35)"
+    },
+    "orders": {
+      "cardBg": "#FFFFFF",
+      "cardBorder": "#E2E8F0",
+      "tableHeaderBg": "#F8FAFC",
+      "tableHeaderText": "#475569",
+      "rowHoverBg": "#F8FAFC",
+      "mutedText": "#64748B",
+      "statCardBg": "#F8FAFC",
+      "statValueText": "#0F172A",
+      "progressTrackBg": "#E2E8F0",
+      "progressBarBg": "#16A34A",
+      "emptyIconColor": "#94A3B8",
+      "codeBg": "#F1F5F9",
+      "cardShadow": "0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 16px rgba(15, 23, 42, 0.04)",
+      "selectedCardBorder": "#2563EB",
+      "selectedCardBg": "#EFF6FF"
+    },
+    "status": {
+      "pendingBg": "#F1F5F9",
+      "pendingText": "#334155",
+      "pendingBorder": "#CBD5E1",
+      "provisioningBg": "#EFF6FF",
+      "provisioningText": "#1D4ED8",
+      "provisioningBorder": "#BFDBFE",
+      "activeBg": "#F0FDF4",
+      "activeText": "#15803D",
+      "activeBorder": "#BBF7D0",
+      "failedBg": "#FEF2F2",
+      "failedText": "#B91C1C",
+      "failedBorder": "#FECACA"
+    },
+    "provider": {
+      "googleBg": "#FFF7ED",
+      "googleText": "#C2410C",
+      "microsoftBg": "#EEF2FF",
+      "microsoftText": "#4338CA"
+    },
+    "audit": {
+      "timelineLine": "#E2E8F0",
+      "dotBg": "#FFFFFF",
+      "dotBorder": "#94A3B8",
+      "timestampText": "#64748B",
+      "reasonText": "#334155",
+      "metadataBg": "#F8FAFC",
+      "actorCustomerText": "#0F766E",
+      "actorAdminText": "#7C3AED",
+      "actorWorkerText": "#1D4ED8",
+      "actorSystemText": "#B45309"
+    },
+    "admin": {
+      "filterBarBg": "#FFFFFF",
+      "filterBarBorder": "#E2E8F0",
+      "customerEmailText": "#334155",
+      "retryButtonBg": "#B45309",
+      "retryButtonHoverBg": "#92400E",
+      "retryButtonText": "#FFFFFF"
+    }
+  },
+  "dark": {
+    "base": {
+      "primary": {
+        "main": "#60A5FA",
+        "light": "#93C5FD",
+        "dark": "#3B82F6",
+        "contrastText": "#0B1220"
+      },
+      "secondary": {
+        "main": "#2DD4BF",
+        "light": "#5EEAD4",
+        "dark": "#14B8A6",
+        "contrastText": "#0B1220"
+      },
+      "error": {
+        "main": "#F87171",
+        "light": "#FCA5A5",
+        "dark": "#EF4444",
+        "contrastText": "#0B1220"
+      },
+      "warning": {
+        "main": "#FBBF24",
+        "light": "#FCD34D",
+        "dark": "#F59E0B",
+        "contrastText": "#0B1220"
+      },
+      "info": {
+        "main": "#38BDF8",
+        "light": "#7DD3FC",
+        "dark": "#0EA5E9",
+        "contrastText": "#0B1220"
+      },
+      "success": {
+        "main": "#4ADE80",
+        "light": "#86EFAC",
+        "dark": "#22C55E",
+        "contrastText": "#0B1220"
+      },
+      "background": { "default": "#0B1220", "paper": "#111827" },
+      "text": { "primary": "#F1F5F9", "secondary": "#94A3B8", "disabled": "#64748B" },
+      "divider": "#1F2937"
+    },
+    "shell": {
+      "appBarBg": "#0F172A",
+      "appBarText": "#F1F5F9",
+      "appBarBorder": "#1F2937",
+      "brandColor": "#60A5FA",
+      "navText": "#94A3B8",
+      "navActiveText": "#93C5FD",
+      "navActiveBg": "rgba(96, 165, 250, 0.12)",
+      "roleChipBg": "#1E293B",
+      "roleChipText": "#CBD5E1",
+      "appBarGlassBg": "rgba(15, 23, 42, 0.72)",
+      "pageGlowPrimary": "rgba(96, 165, 250, 0.12)",
+      "pageGlowSecondary": "rgba(45, 212, 191, 0.07)",
+      "focusRing": "rgba(96, 165, 250, 0.55)",
+      "selectionBg": "rgba(96, 165, 250, 0.35)",
+      "scrollbarThumb": "#334155"
+    },
+    "auth": {
+      "pageBg": "#0B1220",
+      "cardBg": "#111827",
+      "cardBorder": "#1F2937",
+      "cardShadow": "0 10px 30px rgba(0, 0, 0, 0.45)",
+      "titleColor": "#F1F5F9",
+      "subtitleColor": "#94A3B8",
+      "demoBoxBg": "#0F172A",
+      "demoBoxBorder": "#334155",
+      "demoBoxText": "#CBD5E1",
+      "cardGlassBg": "rgba(17, 24, 39, 0.72)",
+      "cardGlassBorder": "rgba(148, 163, 184, 0.18)"
+    },
+    "orders": {
+      "cardBg": "#111827",
+      "cardBorder": "#1F2937",
+      "tableHeaderBg": "#0F172A",
+      "tableHeaderText": "#94A3B8",
+      "rowHoverBg": "#1E293B",
+      "mutedText": "#94A3B8",
+      "statCardBg": "#0F172A",
+      "statValueText": "#F1F5F9",
+      "progressTrackBg": "#1F2937",
+      "progressBarBg": "#4ADE80",
+      "emptyIconColor": "#475569",
+      "codeBg": "#1E293B",
+      "cardShadow": "0 1px 2px rgba(0, 0, 0, 0.30), 0 4px 16px rgba(0, 0, 0, 0.25)",
+      "selectedCardBorder": "#60A5FA",
+      "selectedCardBg": "rgba(96, 165, 250, 0.10)"
+    },
+    "status": {
+      "pendingBg": "#1E293B",
+      "pendingText": "#CBD5E1",
+      "pendingBorder": "#334155",
+      "provisioningBg": "rgba(96, 165, 250, 0.15)",
+      "provisioningText": "#93C5FD",
+      "provisioningBorder": "rgba(96, 165, 250, 0.35)",
+      "activeBg": "rgba(74, 222, 128, 0.12)",
+      "activeText": "#86EFAC",
+      "activeBorder": "rgba(74, 222, 128, 0.35)",
+      "failedBg": "rgba(248, 113, 113, 0.12)",
+      "failedText": "#FCA5A5",
+      "failedBorder": "rgba(248, 113, 113, 0.35)"
+    },
+    "provider": {
+      "googleBg": "rgba(251, 146, 60, 0.15)",
+      "googleText": "#FDBA74",
+      "microsoftBg": "rgba(129, 140, 248, 0.15)",
+      "microsoftText": "#A5B4FC"
+    },
+    "audit": {
+      "timelineLine": "#1F2937",
+      "dotBg": "#111827",
+      "dotBorder": "#64748B",
+      "timestampText": "#94A3B8",
+      "reasonText": "#CBD5E1",
+      "metadataBg": "#0F172A",
+      "actorCustomerText": "#5EEAD4",
+      "actorAdminText": "#C4B5FD",
+      "actorWorkerText": "#93C5FD",
+      "actorSystemText": "#FCD34D"
+    },
+    "admin": {
+      "filterBarBg": "#111827",
+      "filterBarBorder": "#1F2937",
+      "customerEmailText": "#CBD5E1",
+      "retryButtonBg": "#FBBF24",
+      "retryButtonHoverBg": "#F59E0B",
+      "retryButtonText": "#0B1220"
+    }
+  }
+}
