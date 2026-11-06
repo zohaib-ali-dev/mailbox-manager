@@ -48,10 +48,42 @@ npm run worker   # background worker; without it, orders stay Pending
 Open http://localhost:3000, click **Use** next to an account on the login page, then **Sign in**.
 A clean clone took about 3 minutes end to end in testing.
 
-**No Docker, but PostgreSQL is installed locally?** Run `scripts/db/setup-local.sh` (creates only
-the `mailbox_manager` role and two databases; safe to run twice), then in `.env` switch both
-database URLs to port **5432** (the commented lines in `.env.example` show them). Continue with
-`npm ci` and the rest as above.
+### No Docker? Use a local PostgreSQL instead
+
+1. Create the database user and the two databases. The script creates only the `mailbox_manager`
+   role, `mailbox_manager_dev` and `mailbox_manager_test`, touches nothing else and is safe to run
+   twice:
+
+   ```bash
+   scripts/db/setup-local.sh
+   ```
+
+   - **Your PostgreSQL asks for a password** (common on Linux and Windows): pass an admin login,
+     for example `PGUSER=postgres PGPASSWORD=yourpassword scripts/db/setup-local.sh`. A different
+     host or port works the same way with `PGHOST` and `PGPORT`.
+   - **Windows without Git Bash or WSL** (the script needs bash): run these three statements in
+     `psql` or pgAdmin as an admin user instead:
+
+     ```sql
+     CREATE ROLE mailbox_manager LOGIN PASSWORD 'mailbox_manager' CREATEDB;
+     CREATE DATABASE mailbox_manager_dev OWNER mailbox_manager;
+     CREATE DATABASE mailbox_manager_test OWNER mailbox_manager;
+     ```
+
+2. In `.env`, change the port in **both** database URLs from 5433 to **5432** (the commented lines
+   in `.env.example` show them):
+
+   ```
+   DATABASE_URL=postgresql://mailbox_manager:mailbox_manager@localhost:5432/mailbox_manager_dev
+   TEST_DATABASE_URL=postgresql://mailbox_manager:mailbox_manager@localhost:5432/mailbox_manager_test
+   ```
+
+   You can also point both URLs at any databases you already have. The only rule is that the test
+   database's name must end in `_test` (the tests refuse anything else, so they never wipe real
+   data). Passwords with special characters must be URL-encoded (`@` becomes `%40`).
+
+3. Continue with `npm ci`, `npm run db:deploy && npm run db:seed`, `npm run dev` and
+   `npm run worker`, exactly as above.
 
 **Check it works:** `npm test` (about 15 s; unit tests, then integration tests against the
 `_test` database, which Docker and the local script both create).
