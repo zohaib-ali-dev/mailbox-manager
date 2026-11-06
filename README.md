@@ -161,5 +161,8 @@ All responses are JSON with `Cache-Control: no-store`: `{ data, meta? }` or
 - **Node version errors:** use Node 22 or newer (`.nvmrc` says 22; `nvm use`).
 - **"Cannot find module '@/generated/prisma'" after pulling:** run `npm run db:generate`.
 - **"Can't reach database server":** start Docker Desktop, then `docker compose up -d`.
+- **`npm start` stops with "SESSION_SECRET: is the development placeholder":** production mode
+  refuses the `.env.example` secret on purpose. Generate one with `openssl rand -base64 48` and
+  put it in `.env` (`npm run build` itself works with the placeholder).
 - **"Invalid environment configuration":** the message names the missing or invalid variables;
   compare `.env` with `.env.example`.

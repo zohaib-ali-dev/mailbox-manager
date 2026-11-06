@@ -55,16 +55,6 @@ const envSchema = z
         message: 'must be greater than 3 x WORKER_HEARTBEAT_INTERVAL_MS',
       });
     }
-    if (
-      value.NODE_ENV === 'production' &&
-      value.SESSION_SECRET === DEV_SESSION_SECRET_PLACEHOLDER
-    ) {
-      ctx.addIssue({
-        code: 'custom',
-        path: ['SESSION_SECRET'],
-        message: 'is the development placeholder; generate a real secret for production',
-      });
-    }
   });
 
 export type Env = z.infer<typeof envSchema>;
@@ -89,6 +79,20 @@ export function parseEnv(source: Record<string, string | undefined>): Env {
     });
     throw new EnvValidationError(
       `Invalid environment configuration (values are never printed):\n${problems.join('\n')}`,
+    );
+  }
+  // The production app refuses the development placeholder secret. `next build` also runs with
+  // NODE_ENV=production but serves nothing, so the check waits for `next start` (a clean clone
+  // with the .env.example secret must still build).
+  const building = source.NEXT_PHASE === 'phase-production-build';
+  if (
+    result.data.NODE_ENV === 'production' &&
+    !building &&
+    result.data.SESSION_SECRET === DEV_SESSION_SECRET_PLACEHOLDER
+  ) {
+    throw new EnvValidationError(
+      'Invalid environment configuration (values are never printed):\n' +
+        '  - SESSION_SECRET: is the development placeholder; generate a real secret for production',
     );
   }
   return result.data;
