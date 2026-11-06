@@ -31,7 +31,6 @@ export function describeDomainProblem(domain: string): string | null {
       ? 'Enter a domain name, not an IP address.'
       : 'Enter the domain without a port.';
   if (IPV4.test(domain)) return 'Enter a domain name, not an IP address.';
-  // eslint-disable-next-line no-control-regex
   if (/[^\x00-\x7f]/.test(domain))
     return 'Use the punycode form of international domains, e.g. xn--mnchen-3ya.de.';
   if (domain.length > MAX_DOMAIN_LENGTH)
