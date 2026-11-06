@@ -30,7 +30,7 @@ export async function createUser(
   const user = await prisma.user.create({
     data: { email, name: `Test ${role}`, role, passwordHash: await passwordHash },
   });
-  return { id: user.id, email: user.email, role: user.role };
+  return { id: user.id, email: user.email, name: user.name, role: user.role };
 }
 
 export async function currentDatabaseName(prisma: PrismaClient): Promise<string> {
