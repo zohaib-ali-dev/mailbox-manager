@@ -1,6 +1,6 @@
 # Mailbox Manager
 
-Demo video: <link>
+**🎬 Demo video: [https://youtu.be/z4s4yHosa_0](https://youtu.be/z4s4yHosa_0)**
 
 ## In one minute
 
@@ -175,7 +175,7 @@ JSON only: `{ data, meta? }` on success, `{ error: { code, message, details? } }
 
 ## Unfinished
 
-- The demo video link at the top is still a placeholder.
+None. Every requirement in the brief is implemented.
 
 ## Troubleshooting
 
