@@ -13,16 +13,19 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import NextLink from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
 import { EmptyState } from '@/components/feedback/EmptyState';
+import { HeaderHint } from '@/components/feedback/HeaderHint';
 import { ListPagination } from '@/components/feedback/ListPagination';
 import { LiveIndicator } from '@/components/feedback/LiveIndicator';
 import { LocalTime } from '@/components/feedback/LocalTime';
 import { PageHeader } from '@/components/feedback/PageHeader';
 import { OrderCardList } from '@/features/orders/components/OrderCardList';
+import { useOrderWatcher } from '@/features/orders/hooks/useOrderWatcher';
 import { OrderStatusChip } from '@/features/orders/components/OrderStatusChip';
 import { ProviderChip } from '@/features/orders/components/ProviderChip';
 import {
@@ -59,6 +62,12 @@ export function AdminOrdersView({
   const [refreshing, startRefresh] = useTransition();
   const hasInProgress = items.some((order) => IN_PROGRESS_STATUSES.includes(order.status));
   useAutoRefresh(hasInProgress, ADMIN_LIST_REFRESH_MS);
+  const { watch } = useOrderWatcher();
+  /** After a retry: refresh now, then announce the result when the worker finishes. */
+  const onRetried = (order: { id: string }) => {
+    watch(order.id);
+    router.refresh();
+  };
 
   const resetFilters = () => update({ status: undefined, provider: undefined, page: undefined });
 
@@ -68,17 +77,26 @@ export function AdminOrdersView({
         title="All orders"
         subtitle="Every customer order. Filter by status or provider, open an order to see its audit log, and retry failed ones."
         meta={
-          hasInProgress ? <LiveIndicator label="Refreshing while orders are in progress" /> : null
+          hasInProgress ? (
+            <LiveIndicator
+              label="Refreshing while orders are in progress"
+              hint="The list refreshes every 5 seconds while an order on this page is Pending or Provisioning."
+            />
+          ) : null
         }
         actions={
-          <Button
-            variant="outlined"
-            startIcon={<RefreshIcon />}
-            onClick={() => startRefresh(() => router.refresh())}
-            disabled={refreshing}
-          >
-            Refresh
-          </Button>
+          <Tooltip title="Reload the list now. It also refreshes by itself while orders are in progress.">
+            <span>
+              <Button
+                variant="outlined"
+                startIcon={<RefreshIcon />}
+                onClick={() => startRefresh(() => router.refresh())}
+                disabled={refreshing}
+              >
+                Refresh
+              </Button>
+            </span>
+          </Tooltip>
         }
       />
       <Card sx={{ overflow: 'hidden' }}>
@@ -113,7 +131,7 @@ export function AdminOrdersView({
           />
         ) : (
           <>
-            <Box sx={{ display: { xs: 'block', md: 'none' } }}>
+            <Box sx={{ display: { xs: 'block', lg: 'none' } }}>
               <OrderCardList
                 items={items}
                 renderExtra={(order) => (
@@ -129,26 +147,41 @@ export function AdminOrdersView({
                 )}
                 renderActions={(order) =>
                   order.canRetry ? (
-                    <RetryOrderButton
-                      orderId={order.id}
-                      size="small"
-                      onRetried={() => router.refresh()}
-                    />
+                    <RetryOrderButton orderId={order.id} size="small" onRetried={onRetried} />
                   ) : null
                 }
               />
             </Box>
-            <Box sx={{ ...tableScrollStyles, display: { xs: 'none', md: 'block' } }}>
-              <Table size="medium" sx={{ minWidth: 920 }}>
+            <Box sx={{ ...tableScrollStyles, display: { xs: 'none', lg: 'block' } }}>
+              <Table
+                size="medium"
+                sx={{
+                  minWidth: 920,
+                  // Eight columns must fit the 1152 px content area: slightly tighter cells.
+                  '& .MuiTableCell-root': { px: 1.5 },
+                  '& .MuiTableCell-root:first-of-type': { pl: 2 },
+                  '& .MuiTableCell-root:last-of-type': { pr: 2 },
+                }}
+              >
                 <TableHead>
                   <TableRow>
                     <TableCell>Created</TableCell>
                     <TableCell>Customer</TableCell>
                     <TableCell>Domain</TableCell>
                     <TableCell>Provider</TableCell>
-                    <TableCell align="right">Mailboxes</TableCell>
+                    <TableCell align="right">
+                      <HeaderHint
+                        label="Mailboxes"
+                        hint="How many mailboxes the customer ordered."
+                      />
+                    </TableCell>
                     <TableCell>Status</TableCell>
-                    <TableCell align="right">Attempts</TableCell>
+                    <TableCell align="right">
+                      <HeaderHint
+                        label="Attempts"
+                        hint="How many times a worker has processed this order. Every retry adds one."
+                      />
+                    </TableCell>
                     <TableCell align="right">Actions</TableCell>
                   </TableRow>
                 </TableHead>
@@ -166,7 +199,7 @@ export function AdminOrdersView({
                       <TableCell
                         sx={(theme) => ({
                           color: tokens(theme).admin.customerEmailText,
-                          maxWidth: 220,
+                          maxWidth: 190,
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
                           whiteSpace: 'nowrap',
@@ -202,7 +235,7 @@ export function AdminOrdersView({
                             <RetryOrderButton
                               orderId={order.id}
                               size="small"
-                              onRetried={() => router.refresh()}
+                              onRetried={onRetried}
                             />
                           ) : null}
                           <Link

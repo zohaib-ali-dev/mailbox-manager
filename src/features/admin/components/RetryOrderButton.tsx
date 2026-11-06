@@ -3,6 +3,7 @@
 import ReplayIcon from '@mui/icons-material/Replay';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
+import Tooltip from '@mui/material/Tooltip';
 import { useRef, useState, type MouseEvent } from 'react';
 import { useNotify } from '@/components/feedback/SnackbarProvider';
 import { ApiError, apiRequest } from '@/lib/api-client';
@@ -50,26 +51,30 @@ export function RetryOrderButton({ orderId, onRetried, size = 'medium' }: RetryO
   }
 
   return (
-    <Button
-      size={size}
-      variant="contained"
-      onClick={retry}
-      disabled={pending}
-      aria-busy={pending}
-      startIcon={pending ? <CircularProgress size={14} color="inherit" /> : <ReplayIcon />}
-      sx={(theme) => ({
-        bgcolor: tokens(theme).admin.retryButtonBg,
-        color: tokens(theme).admin.retryButtonText,
-        whiteSpace: 'nowrap',
-        '&:hover': { bgcolor: tokens(theme).admin.retryButtonHoverBg },
-        '&.Mui-disabled': {
-          bgcolor: tokens(theme).admin.retryButtonBg,
-          color: tokens(theme).admin.retryButtonText,
-          opacity: 0.7,
-        },
-      })}
-    >
-      {pending ? 'Retrying' : 'Retry'}
-    </Button>
+    <Tooltip title="Provision the failed mailboxes again. Mailboxes that are already active are kept.">
+      <span>
+        <Button
+          size={size}
+          variant="contained"
+          onClick={retry}
+          disabled={pending}
+          aria-busy={pending}
+          startIcon={pending ? <CircularProgress size={14} color="inherit" /> : <ReplayIcon />}
+          sx={(theme) => ({
+            bgcolor: tokens(theme).admin.retryButtonBg,
+            color: tokens(theme).admin.retryButtonText,
+            whiteSpace: 'nowrap',
+            '&:hover': { bgcolor: tokens(theme).admin.retryButtonHoverBg },
+            '&.Mui-disabled': {
+              bgcolor: tokens(theme).admin.retryButtonBg,
+              color: tokens(theme).admin.retryButtonText,
+              opacity: 0.7,
+            },
+          })}
+        >
+          {pending ? 'Retrying' : 'Retry'}
+        </Button>
+      </span>
+    </Tooltip>
   );
 }

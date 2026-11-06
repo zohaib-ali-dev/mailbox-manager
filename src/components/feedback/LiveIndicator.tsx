@@ -1,16 +1,25 @@
 'use client';
 
 import Box from '@mui/material/Box';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { keyframes } from '@mui/material/styles';
 import { tokens } from '@/styles/theme';
 
 const pulse = keyframes`0% { transform: scale(1); opacity: 0.7; } 70% { transform: scale(2.4); opacity: 0; } 100% { opacity: 0; }`;
 
-/** "Live" badge with a pulsing dot while a screen refreshes itself. */
-export function LiveIndicator({ label = 'Live' }: { label?: string }) {
-  return (
-    <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.75 }} role="status">
+/** "Live" badge with a pulsing dot while a screen refreshes itself; the tooltip says how often. */
+export function LiveIndicator({ label = 'Live', hint }: { label?: string; hint?: string }) {
+  const badge = (
+    <Box
+      sx={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: 0.75,
+        cursor: hint ? 'help' : 'default',
+      }}
+      role="status"
+    >
       <Box
         aria-hidden
         sx={(theme) => ({
@@ -38,4 +47,5 @@ export function LiveIndicator({ label = 'Live' }: { label?: string }) {
       </Typography>
     </Box>
   );
+  return hint ? <Tooltip title={hint}>{badge}</Tooltip> : badge;
 }

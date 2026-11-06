@@ -9,6 +9,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import { HeaderHint } from '@/components/feedback/HeaderHint';
 import { LocalTime } from '@/components/feedback/LocalTime';
 import { pluralize } from '@/lib/format';
 import type { MailboxDto } from '@/shared/types/order.dto';
@@ -41,10 +42,25 @@ export function MailboxTable({ mailboxes }: { mailboxes: MailboxDto[] }) {
           <TableHead>
             <TableRow>
               <TableCell sx={{ width: 56 }}>#</TableCell>
-              <TableCell>Address</TableCell>
+              <TableCell>
+                <HeaderHint
+                  label="Address"
+                  hint="Generated as box-NN-<first 8 characters of the order ID>@<your domain>."
+                />
+              </TableCell>
               <TableCell>Status</TableCell>
-              <TableCell>Provisioned</TableCell>
-              <TableCell>Error</TableCell>
+              <TableCell>
+                <HeaderHint
+                  label="Provisioned"
+                  hint="When the provider confirmed the mailbox, in your local time."
+                />
+              </TableCell>
+              <TableCell>
+                <HeaderHint
+                  label="Error"
+                  hint="The provider's last message for a failed mailbox. Hover a message to read all of it."
+                />
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

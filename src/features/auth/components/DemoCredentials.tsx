@@ -3,6 +3,7 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { tokens } from '@/styles/theme';
 import { DEMO_ACCOUNTS } from '../demo-accounts';
@@ -49,15 +50,17 @@ export function DemoCredentials({ onUse }: { onUse: (email: string, password: st
                 {account.email} · {account.password}
               </Typography>
             </Box>
-            <Button
-              size="small"
-              variant="outlined"
-              onClick={() => onUse(account.email, account.password)}
-              aria-label={`Use the ${account.label.toLowerCase()} account`}
-              sx={{ flexShrink: 0 }}
-            >
-              Use
-            </Button>
+            <Tooltip title="Fill the form with this account, then press Sign in.">
+              <Button
+                size="small"
+                variant="outlined"
+                onClick={() => onUse(account.email, account.password)}
+                aria-label={`Use the ${account.label.toLowerCase()} account`}
+                sx={{ flexShrink: 0 }}
+              >
+                Use
+              </Button>
+            </Tooltip>
           </Stack>
         ))}
       </Stack>

@@ -4,10 +4,11 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import type { Theme } from '@mui/material/styles';
 import { LocalTime } from '@/components/feedback/LocalTime';
-import { ACTOR_LABELS, summariseEventMetadata } from '@/lib/order-display';
+import { ACTOR_HINTS, ACTOR_LABELS, summariseEventMetadata } from '@/lib/order-display';
 import type { ActorType } from '@/shared/constants';
 import type { OrderEventDto } from '@/shared/types/order.dto';
 import { tokens } from '@/styles/theme';
@@ -97,12 +98,19 @@ export function AuditLogTimeline({ events }: { events: OrderEventDto[] }) {
                 )}
               </Stack>
               <Typography variant="body2" sx={{ mt: 0.75 }}>
-                <Box
-                  component="span"
-                  sx={(theme) => ({ fontWeight: 650, color: actorColour(theme, event.actorType) })}
-                >
-                  {ACTOR_LABELS[event.actorType]}
-                </Box>
+                <Tooltip title={ACTOR_HINTS[event.actorType]}>
+                  <Box
+                    component="span"
+                    tabIndex={0}
+                    sx={(theme) => ({
+                      fontWeight: 650,
+                      cursor: 'help',
+                      color: actorColour(theme, event.actorType),
+                    })}
+                  >
+                    {ACTOR_LABELS[event.actorType]}
+                  </Box>
+                </Tooltip>
                 {event.actorLabel ? (
                   <Box component="span" sx={{ color: 'text.secondary', overflowWrap: 'anywhere' }}>
                     {' '}

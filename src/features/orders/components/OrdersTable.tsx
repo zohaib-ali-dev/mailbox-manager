@@ -16,6 +16,7 @@ import Link from '@mui/material/Link';
 import NextLink from 'next/link';
 import { useRouter } from 'next/navigation';
 import { EmptyState } from '@/components/feedback/EmptyState';
+import { HeaderHint } from '@/components/feedback/HeaderHint';
 import { ListPagination } from '@/components/feedback/ListPagination';
 import { LiveIndicator } from '@/components/feedback/LiveIndicator';
 import { LocalTime } from '@/components/feedback/LocalTime';
@@ -30,6 +31,7 @@ import {
   mutedTextStyles,
   tableScrollStyles,
 } from '../styles/ordersStyles';
+import { useStatusChangeNotifier } from '../hooks/useStatusChangeNotifier';
 import { OrderCardList } from './OrderCardList';
 import { OrderStatusChip } from './OrderStatusChip';
 import { ProviderChip } from './ProviderChip';
@@ -43,6 +45,7 @@ export function OrdersTable({ items, meta }: { items: OrderSummary[]; meta: Page
   const { update, isPending } = useUrlQuery();
   const hasInProgress = items.some((order) => IN_PROGRESS_STATUSES.includes(order.status));
   useAutoRefresh(hasInProgress, CUSTOMER_LIST_REFRESH_MS);
+  useStatusChangeNotifier(items);
 
   const newOrderButton = (
     <Button component={NextLink} href="/orders/new" variant="contained" startIcon={<AddIcon />}>
@@ -56,7 +59,12 @@ export function OrdersTable({ items, meta }: { items: OrderSummary[]; meta: Page
         title="My orders"
         subtitle="Track every mailbox order. Orders in progress update on their own."
         meta={
-          hasInProgress ? <LiveIndicator label="Updating while orders are in progress" /> : null
+          hasInProgress ? (
+            <LiveIndicator
+              label="Updating while orders are in progress"
+              hint="The list refreshes every 3 seconds while an order on this page is Pending or Provisioning."
+            />
+          ) : null
         }
         actions={meta.total > 0 ? newOrderButton : null}
       />
@@ -102,7 +110,12 @@ export function OrdersTable({ items, meta }: { items: OrderSummary[]; meta: Page
                     <TableCell>Created</TableCell>
                     <TableCell>Domain</TableCell>
                     <TableCell>Provider</TableCell>
-                    <TableCell align="right">Mailboxes</TableCell>
+                    <TableCell align="right">
+                      <HeaderHint
+                        label="Mailboxes"
+                        hint="How many mailboxes you ordered for the domain."
+                      />
+                    </TableCell>
                     <TableCell>Status</TableCell>
                     <TableCell align="right">
                       <Box component="span" sx={visuallyHidden}>

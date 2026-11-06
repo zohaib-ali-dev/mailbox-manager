@@ -10,6 +10,14 @@ export const ACTOR_LABELS: Record<ActorType, string> = {
   SYSTEM: 'System',
 };
 
+/** Tooltip explaining who an audit-log actor is. */
+export const ACTOR_HINTS: Record<ActorType, string> = {
+  CUSTOMER: 'The customer who placed the order.',
+  ADMIN: 'An admin action, for example a retry.',
+  WORKER: 'The background worker process (host:process:id) that provisioned the order.',
+  SYSTEM: 'Automatic recovery: the worker stopped responding, so the order was failed safely.',
+};
+
 const asCount = (value: unknown): number | null =>
   typeof value === 'number' && Number.isInteger(value) && value >= 0 ? value : null;
 

@@ -23,7 +23,7 @@ export const clickableRowStyles = (theme: Theme) => ({
 /** A domain on one line; very long names end in an ellipsis (full name in the title tooltip). */
 export const domainCellStyles = {
   fontWeight: 600,
-  maxWidth: 280,
+  maxWidth: 220,
   whiteSpace: 'nowrap',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
