@@ -10,10 +10,18 @@ import {
   type ProviderRegistry,
 } from '@/server/providers/provider-registry';
 import { env } from '@/server/config/env';
+import { silentLogger, type Logger } from '@/server/logger';
+import {
+  ProvisioningService,
+  type ProvisioningConfig,
+} from '@/server/services/provisioning.service';
 
 export interface ContainerOptions {
   /** Defaults to the mock providers tuned by MOCK_PROVIDER_* in env. */
   providers?: ProviderRegistry;
+  /** Defaults to the WORKER_* and PROVIDER_* values in env. */
+  provisioning?: Partial<ProvisioningConfig>;
+  logger?: Logger;
 }
 
 /**
@@ -36,12 +44,27 @@ export function createContainer(prisma: PrismaClient, options: ContainerOptions 
 
   const orderTransitions = new OrderTransitionService(orders, orderEvents);
   const orderService = new OrderService(prisma, orders, mailboxes, orderTransitions);
+  const provisioningService = new ProvisioningService(
+    prisma,
+    orders,
+    mailboxes,
+    orderTransitions,
+    providers,
+    {
+      providerConcurrency: env.PROVIDER_CONCURRENCY,
+      providerCallTimeoutMs: env.PROVIDER_CALL_TIMEOUT_MS,
+      heartbeatIntervalMs: env.WORKER_HEARTBEAT_INTERVAL_MS,
+      leaseTimeoutMs: env.WORKER_LEASE_TIMEOUT_MS,
+      ...options.provisioning,
+    },
+    options.logger ?? silentLogger,
+  );
 
   return {
     prisma,
     providers,
     repositories: { users, orders, mailboxes, orderEvents },
-    services: { orderTransitions, orderService },
+    services: { orderTransitions, orderService, provisioningService },
   };
 }
 

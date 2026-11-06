@@ -128,4 +128,53 @@ export class OrderRepository {
     });
     return result.count;
   }
+
+  /**
+   * Worker claim, step 1: locks the oldest PENDING order with FOR UPDATE SKIP LOCKED, so two
+   * workers can never select the same row. Must run inside the claiming transaction. Also returns
+   * the database clock, used for `locked_at`.
+   */
+  async lockNextPending(tx: Db): Promise<{ id: string; dbNow: Date } | null> {
+    const rows = await tx.$queryRaw<{ id: string; db_now: Date }[]>`
+      SELECT "id", now() AS "db_now"
+      FROM "orders"
+      WHERE "status" = 'PENDING'
+      ORDER BY "created_at", "id"
+      LIMIT 1
+      FOR UPDATE SKIP LOCKED`;
+    const row = rows[0];
+    return row ? { id: row.id, dbNow: row.db_now } : null;
+  }
+
+  /**
+   * Lease heartbeat: sets `locked_at` to the database clock while this worker still holds the
+   * PROVISIONING lease. Returns false when the lease is lost. Does not touch `status`.
+   */
+  async renewLease(id: string, workerId: string): Promise<boolean> {
+    const updated = await this.prisma.$executeRaw`
+      UPDATE "orders"
+      SET "locked_at" = now()
+      WHERE "id" = ${id}::uuid AND "status" = 'PROVISIONING' AND "locked_by" = ${workerId}`;
+    return updated === 1;
+  }
+
+  /**
+   * Sweeper: locks PROVISIONING orders whose lease is older than `leaseTimeoutMs` by the DATABASE
+   * clock (never the worker's clock), skipping rows another sweeper already holds.
+   */
+  async lockExpiredLeases(
+    leaseTimeoutMs: number,
+    limit: number,
+    tx: Db,
+  ): Promise<{ id: string; lockedBy: string | null }[]> {
+    const rows = await tx.$queryRaw<{ id: string; locked_by: string | null }[]>`
+      SELECT "id", "locked_by"
+      FROM "orders"
+      WHERE "status" = 'PROVISIONING'
+        AND ("locked_at" IS NULL OR "locked_at" < now() - (${leaseTimeoutMs}::int * interval '1 millisecond'))
+      ORDER BY "locked_at" NULLS FIRST, "id"
+      LIMIT ${limit}::int
+      FOR UPDATE SKIP LOCKED`;
+    return rows.map((row) => ({ id: row.id, lockedBy: row.locked_by }));
+  }
 }
