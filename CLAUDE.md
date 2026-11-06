@@ -23,26 +23,26 @@ and retry failed orders (`FAILED -> PENDING`). Every status change writes an aud
 
 ## Commands
 
-| Command                                  | What it does                                       |
-| ---------------------------------------- | -------------------------------------------------- |
-| `npm run dev`                            | Next.js dev server                                 |
-| `npm run build` / `npm start`            | Production build / serve it                        |
-| `npm run lint`                           | ESLint (flat config; `next lint` no longer exists) |
-| `npm run typecheck`                      | Route type generation + `tsc --noEmit`             |
-| `npm run format` / `format:check`        | Prettier write / check                             |
-| `scripts/db/setup-local.sh`              | Create role + dev/test databases on a local server |
-| `scripts/db/teardown-local.sh`           | Drop only what setup-local created                 |
-| `npm run db:generate`                    | `prisma generate` (also runs on `postinstall`)     |
-| `npm run db:migrate`                     | `prisma migrate dev` (development database)        |
-| `npm run db:deploy`                      | `prisma migrate deploy`                            |
-| `npm run db:seed`                        | Seed users and sample orders (idempotent)          |
-| `npm run db:reset`                       | Reset the development database                     |
-| `npm run db:studio`                      | Prisma Studio                                      |
-| `npm test`                               | Unit + integration tests                           |
-| `npm run test:unit` / `test:integration` | One Vitest project                                 |
-| `npm run test:watch`                     | Vitest watch mode                                  |
-| `npm run worker`                         | Background worker (added in Ticket 2.2)            |
-| `npm run order:create -- ...`            | Dev CLI to create an order (added in Ticket 2.2)   |
+| Command                                                       | What it does                                        |
+| ------------------------------------------------------------- | --------------------------------------------------- |
+| `npm run dev`                                                 | Next.js dev server                                  |
+| `npm run build` / `npm start`                                 | Production build / serve it                         |
+| `npm run lint`                                                | ESLint (flat config; `next lint` no longer exists)  |
+| `npm run typecheck`                                           | Route type generation + `tsc --noEmit`              |
+| `npm run format` / `format:check`                             | Prettier write / check                              |
+| `scripts/db/setup-local.sh`                                   | Create role + dev/test databases on a local server  |
+| `scripts/db/teardown-local.sh`                                | Drop only what setup-local created                  |
+| `npm run db:generate`                                         | `prisma generate` (also runs on `postinstall`)      |
+| `npm run db:migrate`                                          | `prisma migrate dev` (development database)         |
+| `npm run db:deploy`                                           | `prisma migrate deploy`                             |
+| `npm run db:seed`                                             | Seed users and sample orders (idempotent)           |
+| `npm run db:reset`                                            | Reset the development database                      |
+| `npm run db:studio`                                           | Prisma Studio                                       |
+| `npm test`                                                    | Unit + integration tests                            |
+| `npm run test:unit` / `test:integration`                      | One Vitest project                                  |
+| `npm run test:watch`                                          | Vitest watch mode                                   |
+| `npm run worker`                                              | Background worker (run several for more throughput) |
+| `npm run order:create -- --email --domain --provider --count` | Dev CLI: create an order through OrderService       |
 
 ## Where the docs live
 
