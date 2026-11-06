@@ -2,6 +2,7 @@ import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import type { Metadata, Viewport } from 'next';
 import { APP_NAME } from '@/shared/constants';
 import { ThemeRegistry } from '@/styles/ThemeRegistry';
+import { COLOR_MODE_STORAGE_KEY, DEFAULT_COLOR_MODE } from '@/styles/theme';
 
 export const metadata: Metadata = {
   title: { template: `%s · ${APP_NAME}`, default: APP_NAME },
@@ -29,7 +30,11 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <InitColorSchemeScript attribute="class" defaultMode="system" />
+        <InitColorSchemeScript
+          attribute="class"
+          defaultMode={DEFAULT_COLOR_MODE}
+          modeStorageKey={COLOR_MODE_STORAGE_KEY}
+        />
         <ThemeRegistry>{children}</ThemeRegistry>
       </body>
     </html>

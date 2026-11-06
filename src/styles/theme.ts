@@ -9,6 +9,13 @@ import themeColors from './themeColors.json';
 
 type Mode = keyof typeof themeColors;
 
+/**
+ * Light is the default for every new visitor; the theme toggle can switch to dark or system and the
+ * choice is remembered under this key. (A new key, so a choice saved under the old default is reset.)
+ */
+export const DEFAULT_COLOR_MODE = 'light';
+export const COLOR_MODE_STORAGE_KEY = 'mm-color-mode';
+
 /** Flattens one mode's `base` palette and every custom group into a single MUI palette object. */
 function paletteFor(mode: Mode) {
   const { base, ...groups } = themeColors[mode];
