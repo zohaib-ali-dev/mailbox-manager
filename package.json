@@ -19,7 +19,11 @@
     "db:deploy": "prisma migrate deploy",
     "db:seed": "tsx prisma/seed.ts",
     "db:reset": "prisma migrate reset --force",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "test": "npm run test:unit && npm run test:integration",
+    "test:unit": "vitest run --project unit",
+    "test:integration": "vitest run --project integration --no-file-parallelism",
+    "test:watch": "vitest --project unit"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.10.1",
@@ -43,6 +47,7 @@
     "prettier": "^3.9.10",
     "prisma": "^7.10.1",
     "tsx": "^4.23.15",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^5.1.0"
   }
 }
