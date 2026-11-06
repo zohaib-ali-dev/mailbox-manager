@@ -21,7 +21,7 @@ const PUNYCODE_TLD = /^xn--[a-z0-9-]+$/;
 export function describeDomainProblem(domain: string): string | null {
   if (domain.length === 0) return 'Enter a domain, for example example.com.';
   if (/^[a-z][a-z0-9+.-]*:\/\//.test(domain))
-    return 'Enter only the domain, without http:// or https://.';
+    return 'Enter only the domain, without http:// or https:// in front.';
   if (domain.includes('@')) return 'Enter a domain, not an email address.';
   if (domain.includes('/')) return 'Enter only the domain, without a path.';
   if (domain.includes('*')) return 'Wildcard domains are not supported.';

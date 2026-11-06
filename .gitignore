@@ -45,3 +45,6 @@ docs/*.pdf
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# playwright-cli artifacts
+/.playwright-cli

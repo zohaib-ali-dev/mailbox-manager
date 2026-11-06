@@ -1,5 +1,6 @@
 'use client';
 
+import { visuallyHidden } from './visuallyHidden';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Skeleton from '@mui/material/Skeleton';
@@ -9,16 +10,7 @@ import Stack from '@mui/material/Stack';
 export function LoadingState({ rows = 6 }: { rows?: number }) {
   return (
     <Box aria-busy="true" aria-live="polite">
-      <Box
-        component="span"
-        sx={{
-          position: 'absolute',
-          width: 1,
-          height: 1,
-          overflow: 'hidden',
-          clip: 'rect(0 0 0 0)',
-        }}
-      >
+      <Box component="span" sx={visuallyHidden}>
         Loading
       </Box>
       <Skeleton variant="text" width={220} height={44} />
