@@ -5,6 +5,7 @@ import { OrderRepository } from '@/server/repositories/order.repository';
 import { UserRepository } from '@/server/repositories/user.repository';
 import { OrderTransitionService } from '@/server/services/order-transition.service';
 import { OrderService } from '@/server/services/order.service';
+import { AuthService } from '@/server/services/auth.service';
 import {
   createMockProviderRegistry,
   type ProviderRegistry,
@@ -42,6 +43,7 @@ export function createContainer(prisma: PrismaClient, options: ContainerOptions 
       failureRate: env.MOCK_PROVIDER_FAILURE_RATE,
     });
 
+  const authService = new AuthService(users);
   const orderTransitions = new OrderTransitionService(orders, orderEvents);
   const orderService = new OrderService(prisma, orders, mailboxes, orderTransitions);
   const provisioningService = new ProvisioningService(
@@ -64,7 +66,7 @@ export function createContainer(prisma: PrismaClient, options: ContainerOptions 
     prisma,
     providers,
     repositories: { users, orders, mailboxes, orderEvents },
-    services: { orderTransitions, orderService, provisioningService },
+    services: { authService, orderTransitions, orderService, provisioningService },
   };
 }
 
