@@ -90,7 +90,10 @@ and retry failed orders (`FAILED -> PENDING`). Every status change writes an aud
 ## Layer audit (run before every commit)
 
 ```bash
-grep -rnE "generated/prisma|server/db|server/repositories" src/app   # expect nothing
-grep -rn "process.env" src --include=*.ts --include=*.tsx | grep -v src/server/config/env.ts
-grep -rnE "status:" src/server --include=*.ts | grep -v order-transition.service.ts | grep -i "orderStatus\|status: to"
+# expect nothing
+grep -rnE "generated/prisma|server/db|server/repositories" src/app
+grep -rn "process.env" src --exclude-dir=generated | grep -v src/server/config/env.ts
+# expect only order.repository.ts (definition) and order-transition.service.ts (the one caller)
+grep -rn "updateStatusIfCurrent" src prisma scripts tests
+grep -rnE "\.order\.(update|updateMany|upsert)\(" src prisma scripts --exclude-dir=generated
 ```
